@@ -9,7 +9,7 @@ class Main:
 
     def prepareDataset(self):
         normalizedData = pdm.normalize(self.covidData)
-        self.train, self.test, self.forecast = pdm.splitData(normalizedData)
+        # self.train, self.test, self.forecast = pdm.splitData(normalizedData)
 
     def trainData(self):
         cnna.fit_model(self.train, self.test)
@@ -22,4 +22,4 @@ class Main:
 
 m = Main()
 m.prepareDataset()
-m.trainData()
+# m.trainData()

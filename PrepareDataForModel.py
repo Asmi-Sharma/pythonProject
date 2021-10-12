@@ -26,16 +26,38 @@ from sklearn.preprocessing import MinMaxScaler
 import csv
 
 def normalize(covidData):
-    timeSeriesData = covidData.set_index(pd.DatetimeIndex(covidData['date']))
-    resampledData = timeSeriesData.resample('M').mean()
-    scalar = MinMaxScaler(feature_range=(0,1))
-    scalar = scalar.fit(resampledData)
-    normalizedData = scalar.transform(resampledData)
-    normalizedData = pd.DataFrame([normalizedData.flatten()])
-    normalizedData = normalizedData.T
-    normalizedData = normalizedData.set_index(pd.DatetimeIndex(resampledData.index))
-    normalizedData = normalizedData.rename(columns={0: 'new_cases'})
-    return normalizedData
+    # timeSeriesData = covidData.set_index(pd.DatetimeIndex(covidData['date']))
+    # resampledData = timeSeriesData.resample('M').mean()
+    # scalar = MinMaxScaler(feature_range=(0,1))
+    # scalar = scalar.fit(resampledData)
+    # normalizedData = scalar.transform(resampledData)
+    # normalizedData = pd.DataFrame([normalizedData.flatten()])
+    # normalizedData = normalizedData.T
+    # normalizedData = normalizedData.set_index(pd.DatetimeIndex(resampledData.index))
+    # normalizedData = normalizedData.rename(columns={0: 'new_cases'})
+    # return normalizedData
+
+    # data = pd.read_csv("NepalCovidDataSample.csv")
+    # print(data)
+    new_case = covidData['new_cases']
+    # print('new cases\n',new_case)
+    print('Length = ', len(new_case))
+    # mean and standard deviation
+    mean_value = new_case.mean()
+    SD_value = new_case.std()
+    print('Mean =', mean_value)
+    print('SD = ', SD_value)
+
+    # z-score calculation
+    # cols = list(new_case.columns)
+    # print(cols)
+    zscore_value = []
+    for i in range(len(new_case)):
+        z_score = (new_case[i] - mean_value) / SD_value
+        zscore_value.append(z_score)
+    print(zscore_value)
+    z = pd.DataFrame(zscore_value)
+    return z
 
 def splitData(normalizedData):
     train, test = train_test_split(normalizedData, test_size = 0.25, shuffle=False)
